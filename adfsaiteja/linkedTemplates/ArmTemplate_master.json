@@ -1,0 +1,152 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfsaiteja"
+		},
+		"copydata_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'copydata'"
+		},
+		"parameterizedsql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'parameterizedsql'"
+		},
+		"parameterizedsql2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'parameterizedsql2'",
+			"defaultValue": "Integrated Security=False;Data Source=@{linkedService().servername};Initial Catalog=@{linkedService().dbname};User ID=@{linkedService().username};Password=@{linkedService().password}"
+		},
+		"saitejademoblob_ls_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'saitejademoblob_ls'"
+		},
+		"trigger_properties_parametrizedpipeline1_parameters_sourcetable": {
+			"type": "string",
+			"defaultValue": "table1"
+		},
+		"trigger_properties_parametrizedpipeline1_parameters_dbnamefrompipeline": {
+			"type": "string",
+			"defaultValue": "dbo"
+		},
+		"trigger_properties_parametrizedpipeline1_parameters_targettable": {
+			"type": "string",
+			"defaultValue": "table2"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adfsaiteja_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"copydata_connectionString": {
+						"value": "[parameters('copydata_connectionString')]"
+					},
+					"parameterizedsql_connectionString": {
+						"value": "[parameters('parameterizedsql_connectionString')]"
+					},
+					"parameterizedsql2_connectionString": {
+						"value": "[parameters('parameterizedsql2_connectionString')]"
+					},
+					"saitejademoblob_ls_connectionString": {
+						"value": "[parameters('saitejademoblob_ls_connectionString')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adfsaiteja_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adfsaiteja_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "adfsaiteja_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adfsaiteja_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "adfsaiteja_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"trigger_properties_parametrizedpipeline1_parameters_sourcetable": {
+						"value": "[parameters('trigger_properties_parametrizedpipeline1_parameters_sourcetable')]"
+					},
+					"trigger_properties_parametrizedpipeline1_parameters_dbnamefrompipeline": {
+						"value": "[parameters('trigger_properties_parametrizedpipeline1_parameters_dbnamefrompipeline')]"
+					},
+					"trigger_properties_parametrizedpipeline1_parameters_targettable": {
+						"value": "[parameters('trigger_properties_parametrizedpipeline1_parameters_targettable')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adfsaiteja_ArmTemplate_2')]"
+			]
+		}
+	]
+}

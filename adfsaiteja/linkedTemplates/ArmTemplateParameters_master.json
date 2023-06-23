@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfsaiteja"
+		},
+		"copydata_connectionString": {
+			"value": ""
+		},
+		"parameterizedsql_connectionString": {
+			"value": ""
+		},
+		"parameterizedsql2_connectionString": {
+			"value": "Integrated Security=False;Data Source=@{linkedService().servername};Initial Catalog=@{linkedService().dbname};User ID=@{linkedService().username};Password=@{linkedService().password}"
+		},
+		"saitejademoblob_ls_connectionString": {
+			"value": ""
+		},
+		"trigger_properties_parametrizedpipeline1_parameters_sourcetable": {
+			"value": "table1"
+		},
+		"trigger_properties_parametrizedpipeline1_parameters_dbnamefrompipeline": {
+			"value": "dbo"
+		},
+		"trigger_properties_parametrizedpipeline1_parameters_targettable": {
+			"value": "table2"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
