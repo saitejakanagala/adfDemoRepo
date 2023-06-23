@@ -1,0 +1,43 @@
+{
+	"name": "employee_ds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "saitejademoblob_ls",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "saiteja_datasets"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "employee.xlsx",
+				"folderPath": "Input",
+				"container": "saitejacontainer"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "empid",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "country",
+				"type": "String"
+			},
+			{
+				"name": "department",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,22 @@
+{
+	"name": "copydata_src",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "copydata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "saiteja_datasets"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "ple.txtsam",
+				"container": "input"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

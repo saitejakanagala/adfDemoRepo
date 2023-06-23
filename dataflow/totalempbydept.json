@@ -1,0 +1,57 @@
+{
+	"name": "totalempbydept",
+	"properties": {
+		"folder": {
+			"name": "saiteja"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "employee1csv_ds",
+						"type": "DatasetReference"
+					},
+					"name": "employee1src"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "empdeptoutput_ds",
+						"type": "DatasetReference"
+					},
+					"name": "totalempbydept"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          country as string,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> employee1src",
+				"employee1src aggregate(groupBy(department),",
+				"     totalemployees = count(empid)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['totalempbydept.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          department,",
+				"          totalemployees",
+				"     ),",
+				"     partitionBy('hash', 1)) ~> totalempbydept"
+			]
+		}
+	}
+}

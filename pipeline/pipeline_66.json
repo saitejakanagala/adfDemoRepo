@@ -1,0 +1,48 @@
+{
+	"name": "pipeline_66",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "parameterized_dataflow_66",
+						"type": "DataFlowReference",
+						"parameters": {
+							"depName": {
+								"value": "'@{pipeline().parameters.dep}'",
+								"type": "Expression"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 32,
+						"computeType": "MemoryOptimized"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"dep": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "saiteja_pipelines"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-06-23T05:10:49Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

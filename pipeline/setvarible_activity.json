@@ -1,0 +1,46 @@
+{
+	"name": "setvarible_activity",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "filetype",
+					"value": {
+						"value": "@replace(pipeline().parameters.filename,'sales','')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"filename": {
+				"type": "string",
+				"defaultValue": "dailysales"
+			}
+		},
+		"variables": {
+			"filetype": {
+				"type": "String"
+			},
+			"list of file": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "saiteja_pipelines"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-06-23T05:10:49Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

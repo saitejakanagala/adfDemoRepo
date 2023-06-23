@@ -1,0 +1,84 @@
+{
+	"name": "uniondataflow_55",
+	"properties": {
+		"folder": {
+			"name": "saiteja"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "it_ds",
+						"type": "DatasetReference"
+					},
+					"name": "it"
+				},
+				{
+					"dataset": {
+						"referenceName": "hr_ds",
+						"type": "DatasetReference"
+					},
+					"name": "hr"
+				},
+				{
+					"dataset": {
+						"referenceName": "payroll_ds",
+						"type": "DatasetReference"
+					},
+					"name": "payroll"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "empdeptoutput_ds",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "unionall"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          country as string,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> it",
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          country as string,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> hr",
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          country as string,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> payroll",
+				"it, hr, payroll union(byName: true)~> unionall",
+				"unionall sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['allemployees.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

@@ -1,0 +1,75 @@
+{
+	"name": "windowtransformation_63",
+	"properties": {
+		"folder": {
+			"name": "saiteja"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EMPNEW",
+						"type": "DatasetReference"
+					},
+					"name": "EMPNEW"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "empdeptoutput_ds",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "empdeptoutput_ds",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "windowavg"
+				},
+				{
+					"name": "windowdenserank"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as integer,",
+				"          name as string,",
+				"          gender as string,",
+				"          country as string,",
+				"          salary as integer,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EMPNEW",
+				"EMPNEW window(over(department),",
+				"     asc(salary, true),",
+				"     { avg salary} = avg(salary)) ~> windowavg",
+				"EMPNEW window(over(department),",
+				"     desc(salary, true),",
+				"     denserank = denseRank()) ~> windowdenserank",
+				"windowavg sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['windowtransformation_avgsalary.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1",
+				"windowdenserank sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['windowtransformation_denserank.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink2"
+			]
+		}
+	}
+}

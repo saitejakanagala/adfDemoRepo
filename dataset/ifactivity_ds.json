@@ -1,0 +1,30 @@
+{
+	"name": "ifactivity_ds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "copydata",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"output": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "saiteja_datasets"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@dataset().output",
+					"type": "Expression"
+				},
+				"container": "op1"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

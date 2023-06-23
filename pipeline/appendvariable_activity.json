@@ -1,0 +1,41 @@
+{
+	"name": "appendvariable_activity",
+	"properties": {
+		"activities": [
+			{
+				"name": "Append variable1",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "listoffiles",
+					"value": {
+						"value": "@pipeline().parameters.filename",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"filename": {
+				"type": "string",
+				"defaultValue": "sales.txt"
+			}
+		},
+		"variables": {
+			"listoffiles": {
+				"type": "Array",
+				"defaultValue": [
+					"salesuk",
+					"salesus"
+				]
+			}
+		},
+		"folder": {
+			"name": "saiteja_pipelines"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-06-23T05:10:49Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

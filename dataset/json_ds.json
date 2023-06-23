@@ -1,0 +1,51 @@
+{
+	"name": "json_ds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "saitejademoblob_ls",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "saiteja_datasets"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "sample json.json",
+				"folderPath": "Input",
+				"container": "saitejacontainer"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Actors": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"name": {
+								"type": "string"
+							},
+							"age": {
+								"type": "integer"
+							},
+							"Born At": {
+								"type": "string"
+							},
+							"Birthdate": {
+								"type": "string"
+							},
+							"photo": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

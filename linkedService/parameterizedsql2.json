@@ -1,0 +1,25 @@
+{
+	"name": "parameterizedsql2",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"servername": {
+				"type": "string"
+			},
+			"dbname": {
+				"type": "string"
+			},
+			"username": {
+				"type": "string"
+			},
+			"password": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Data Source=@{linkedService().servername};Initial Catalog=@{linkedService().dbname};User ID=@{linkedService().username};Password=@{linkedService().password}"
+		}
+	}
+}
