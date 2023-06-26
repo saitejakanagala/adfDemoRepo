@@ -114,6 +114,9 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"folder": {
+					"name": "saiteja_pipelines"
+				},
 				"annotations": []
 			},
 			"dependsOn": []

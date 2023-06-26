@@ -1420,6 +1420,9 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"folder": {
+					"name": "saiteja_pipelines"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -3417,6 +3420,9 @@
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"folder": {
+					"name": "saiteja"
+				},
 				"type": "MappingDataFlow",
 				"typeProperties": {
 					"sources": [
