@@ -13,6 +13,37 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/foreach_ds')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "copydata",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FolderName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "saiteja_datasets"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": {
+							"value": "@dataset().FolderName",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/hr_ds')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -370,7 +401,9 @@
 				"annotations": [],
 				"lastPublishTime": "2023-06-23T05:10:49Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/foreach_ds')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/copydata_activity')]",
@@ -1451,97 +1484,6 @@
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/newbranch_dataflow_58')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "saiteja"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "employee1csv_ds",
-								"type": "DatasetReference"
-							},
-							"name": "employeeagain"
-						},
-						{
-							"dataset": {
-								"referenceName": "deparment_ds",
-								"type": "DatasetReference"
-							},
-							"name": "department"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "empdeptoutput_ds",
-								"type": "DatasetReference"
-							},
-							"name": "joindeptandemp"
-						},
-						{
-							"dataset": {
-								"referenceName": "empdeptoutput_ds",
-								"type": "DatasetReference"
-							},
-							"name": "totalempbydept"
-						}
-					],
-					"transformations": [
-						{
-							"name": "aggregateondept"
-						},
-						{
-							"name": "joinempanddept"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          empid as string,",
-						"          name as string,",
-						"          country as string,",
-						"          department as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> employeeagain",
-						"source(output(",
-						"          depid as string,",
-						"          depname as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> department",
-						"employeeagain aggregate(groupBy(department),",
-						"     totalemployees = count(empid)) ~> aggregateondept",
-						"employeeagain, department join(department == depname,",
-						"     joinType:'outer',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> joinempanddept",
-						"joinempanddept sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['joinoutput58.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> joindeptandemp",
-						"aggregateondept sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['outputtotalempbydept58.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> totalempbydept"
 					]
 				}
 			},
