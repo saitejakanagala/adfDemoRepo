@@ -1,6 +1,9 @@
 {
 	"name": "rank_dataflow_81",
 	"properties": {
+		"folder": {
+			"name": "saiteja"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
