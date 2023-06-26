@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "totalempbydept",
+						"referenceName": "aggregatetranformatio_50",
 						"type": "DataFlowReference"
 					},
 					"compute": {
