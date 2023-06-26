@@ -211,7 +211,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "totalempbydept",
+								"referenceName": "aggregatetranformatio_50",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
@@ -239,7 +239,7 @@
 				"lastPublishTime": "2023-06-23T05:10:49Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/totalempbydept')]"
+				"[concat(variables('factoryId'), '/dataflows/aggregatetranformatio_50')]"
 			]
 		},
 		{
@@ -2861,6 +2861,69 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/aggregatetranformatio_50')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "saiteja"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "employee1csv_ds",
+								"type": "DatasetReference"
+							},
+							"name": "employee1src"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "empdeptoutput_ds",
+								"type": "DatasetReference"
+							},
+							"name": "totalempbydept"
+						}
+					],
+					"transformations": [
+						{
+							"name": "aggregate1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          empid as string,",
+						"          name as string,",
+						"          country as string,",
+						"          department as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> employee1src",
+						"employee1src aggregate(groupBy(department),",
+						"     totalemployees = count(empid)) ~> aggregate1",
+						"aggregate1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['totalempbydept.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          department,",
+						"          totalemployees",
+						"     ),",
+						"     partitionBy('hash', 1)) ~> totalempbydept"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/employee1csv_ds')]",
+				"[concat(variables('factoryId'), '/datasets/empdeptoutput_ds')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/condiotinalsplit_dataflow52')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -3671,69 +3734,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/employeenew_ds')]",
-				"[concat(variables('factoryId'), '/datasets/empdeptoutput_ds')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/totalempbydept')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "saiteja"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "employee1csv_ds",
-								"type": "DatasetReference"
-							},
-							"name": "employee1src"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "empdeptoutput_ds",
-								"type": "DatasetReference"
-							},
-							"name": "totalempbydept"
-						}
-					],
-					"transformations": [
-						{
-							"name": "aggregate1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          empid as string,",
-						"          name as string,",
-						"          country as string,",
-						"          department as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> employee1src",
-						"employee1src aggregate(groupBy(department),",
-						"     totalemployees = count(empid)) ~> aggregate1",
-						"aggregate1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['totalempbydept.csv'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          department,",
-						"          totalemployees",
-						"     ),",
-						"     partitionBy('hash', 1)) ~> totalempbydept"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/employee1csv_ds')]",
 				"[concat(variables('factoryId'), '/datasets/empdeptoutput_ds')]"
 			]
 		},
