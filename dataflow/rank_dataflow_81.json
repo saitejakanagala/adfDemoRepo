@@ -1,0 +1,53 @@
+{
+	"name": "rank_dataflow_81",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EMPNEW",
+						"type": "DatasetReference"
+					},
+					"name": "EMPNEW"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "empdeptoutput_ds",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "rank"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empid as string,",
+				"          name as string,",
+				"          gender as string,",
+				"          country as string,",
+				"          salary as string,",
+				"          department as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EMPNEW",
+				"EMPNEW rank(asc(salary, true),",
+				"     output(rank as long),",
+				"     dense: true) ~> rank",
+				"rank sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['rankoutput_81.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}
